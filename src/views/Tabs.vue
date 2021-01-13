@@ -29,7 +29,14 @@
 </template>
 
 <script lang="ts">
-import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage } from '@ionic/vue';
+import {
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
+  IonLabel,
+  IonIcon,
+  IonPage,
+} from '@ionic/vue';
 import { ellipse, square, triangle } from 'ionicons/icons';
 
 export default {
@@ -40,7 +47,7 @@ export default {
       ellipse,
       square,
       triangle,
-    }
-  }
-}
+    };
+  },
+};
 </script>
