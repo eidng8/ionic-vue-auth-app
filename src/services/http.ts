@@ -9,6 +9,7 @@ import axios, { AxiosResponse } from 'axios';
 import '@capacitor-community/http';
 import { Plugins } from '@capacitor/core';
 import { HttpOptions, HttpPlugin } from '@capacitor-community/http';
+import { Credential } from '@/types/Credential';
 
 /**
  * Tell axios to use Capacitor's HTTP, and sets the base URL.
@@ -18,7 +19,7 @@ import { HttpOptions, HttpPlugin } from '@capacitor-community/http';
  */
 export default function (
   urlBase: string,
-  http: HttpPlugin = Plugins.Http,
+  http = Plugins.Http as HttpPlugin,
 ): void {
   axios.defaults.baseURL = urlBase;
 
@@ -28,7 +29,7 @@ export default function (
       url: new URL(config.url || '', config.baseURL).toString(),
       method: config.method,
       params: config.params,
-      data: config.data,
+      data: JSON.parse(config.data), // axios has done the conversion
       headers: config.headers,
       readTimeout: config.timeout,
       connectTimeout: config.timeout,
@@ -40,4 +41,14 @@ export default function (
       .request(options)
       .then(res => ({ config, ...res } as AxiosResponse));
   };
+}
+
+export interface LoginSuccess {
+  token: string;
+  token_type: 'bearer';
+  expires_in: number;
+}
+
+export function login(credential: Credential) {
+  return axios.post<LoginSuccess>('/login', credential);
 }

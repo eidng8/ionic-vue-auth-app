@@ -20,19 +20,23 @@ describe('Tab1', () => {
     moxios.uninstall();
   });
 
-  it('renders tab 1 view', done => {
-    const wrapper = mount(Tab1);
-    expect(wrapper.find('ion-card').isVisible()).toBeTruthy();
-    expect(moxios.requests.count()).toBe(1);
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      expect(request.url).toBe('login');
-      request
-        .respondWith({
-          status: 200,
-          response: { token: 'just a test response' },
-        })
-        .then(() => done());
+  it('renders tab 1 view', (/*done*/) => {
+    const wrapper = mount(Tab1, {
+      global: {
+        provide: { store: { getters: { messages: ['just a test'] } } },
+      },
     });
+    expect(wrapper.find('ion-card').isVisible()).toBeTruthy();
+    // expect(moxios.requests.count()).toBe(1);
+    // moxios.wait(() => {
+    //   const request = moxios.requests.mostRecent();
+    //   expect(request.url).toBe('login');
+    //   request
+    //     .respondWith({
+    //       status: 200,
+    //       response: { token: 'just a test response' },
+    //     })
+    //     .then(() => done());
+    // });
   });
 });

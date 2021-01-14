@@ -18,24 +18,25 @@
           <ion-title size="large">auth-app</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <login-form></login-form>
-      <ion-icon name="eye"></ion-icon>
+      <div class="page-content">
+        <login-form></login-form>
+        <message-box></message-box>
+      </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent } from 'vue';
 import {
   IonContent,
   IonHeader,
   IonPage,
   IonTitle,
   IonToolbar,
-  IonIcon,
 } from '@ionic/vue';
 import LoginForm from '@/components/LoginForm.vue';
+import MessageBox from '@/components/MessageBox.vue';
 
 export default defineComponent({
   name: 'Tab1',
@@ -46,14 +47,14 @@ export default defineComponent({
     IonTitle,
     IonToolbar,
     LoginForm,
-    IonIcon,
-  },
-  setup() {
-    onMounted(() => {
-      // axios.post('login').then(res => console.log(res));
-    });
+    MessageBox,
   },
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.page-content {
+  width: 100%;
+  height: calc(100% - 10px);
+}
+</style>

@@ -11,6 +11,7 @@ import { IonicVue } from '@ionic/vue';
 import App from './App.vue';
 import router from './router';
 import configureHttp from '@/services/http';
+import { store } from '@/store';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -32,8 +33,8 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 
 // remember to change server address
-configureHttp('http://172.28.33.155');
+configureHttp('http://172.20.90.226');
 
-const app = createApp(App).use(IonicVue).use(router);
+const app = createApp(App).use(IonicVue).use(router).use(store);
 
 router.isReady().then(() => app.mount('#app'));

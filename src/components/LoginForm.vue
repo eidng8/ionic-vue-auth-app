@@ -45,9 +45,9 @@ import {
   IonLabel,
   IonList,
 } from '@ionic/vue';
-import axios from 'axios';
 
 import PasswordWithEyeToggle from '@/components/PasswordWithEyeToggle.vue';
+import { store } from '@/store';
 
 export default defineComponent({
   name: 'LoginForm',
@@ -71,8 +71,10 @@ export default defineComponent({
       submit: (evt: Event) => {
         evt.stopImmediatePropagation();
         evt.preventDefault();
-        axios.post('login').then(res => console.log(res));
-        console.log('submit', email.value, password.value, evt.target);
+        store.dispatch('login', {
+          email: email.value,
+          password: password.value,
+        });
       },
     };
   },
