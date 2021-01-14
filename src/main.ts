@@ -6,15 +6,11 @@
  */
 
 import { createApp } from 'vue';
-import axios, { AxiosResponse } from 'axios';
-import VueAxios from 'vue-axios';
-
 import { IonicVue } from '@ionic/vue';
-import '@capacitor-community/http';
-import { Plugins } from '@capacitor/core';
 
 import App from './App.vue';
 import router from './router';
+import configureHttp from '@/services/http';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -34,29 +30,10 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { HttpOptions } from '@capacitor-community/http';
 
-const { Http } = Plugins;
+// remember to change server address
+configureHttp('http://172.28.33.155');
 
-axios.defaults.baseURL = 'http://172.28.47.46';
-axios.defaults.adapter = config => {
-  const options: HttpOptions = {
-    url: new URL(config.url || '', config.baseURL).toString(),
-    method: config.method,
-    params: config.params,
-    data: config.data,
-    headers: config.headers,
-    readTimeout: config.timeout,
-    connectTimeout: config.timeout,
-    webFetchExtra: {
-      credentials: config.withCredentials ? 'include' : 'same-origin',
-    },
-  };
-  return Http.request(options).then(
-    res => ({ config, ...res } as AxiosResponse),
-  );
-};
-
-const app = createApp(App).use(IonicVue).use(router).use(VueAxios, axios);
+const app = createApp(App).use(IonicVue).use(router);
 
 router.isReady().then(() => app.mount('#app'));

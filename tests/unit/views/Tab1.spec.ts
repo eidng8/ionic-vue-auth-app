@@ -23,6 +23,7 @@ describe('Tab1', () => {
   it('renders tab 1 view', done => {
     const wrapper = mount(Tab1);
     expect(wrapper.find('ion-card').isVisible()).toBeTruthy();
+    expect(moxios.requests.count()).toBe(1);
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       expect(request.url).toBe('login');

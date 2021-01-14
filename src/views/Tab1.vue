@@ -56,8 +56,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-ion-card {
-  margin-top: 50%;
-}
-</style>
+<style scoped></style>
