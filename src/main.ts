@@ -33,7 +33,7 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 
 // remember to change server address
-configureHttp('http://172.20.90.226');
+configureHttp('http://172.20.90.36');
 
 const app = createApp(App).use(IonicVue).use(router).use(store);
 

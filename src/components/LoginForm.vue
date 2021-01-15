@@ -16,10 +16,8 @@
           </ion-item>
           <ion-item>
             <ion-label position="floating">Password</ion-label>
-            <password-with-eye-toggle
-              required
-              v-model="password"
-            ></password-with-eye-toggle>
+            <password-with-eye-toggle required v-model="password">
+            </password-with-eye-toggle>
           </ion-item>
           <ion-item lines="none"></ion-item>
           <ion-item lines="none">
