@@ -15,7 +15,12 @@ import {
 import { getters, Getters } from '@/store/getter';
 import { AuthState } from '@/store/states';
 import { mutations, Mutations } from '@/store/mutations';
-import { actions, Actions, AugmentedActionContext } from '@/store/actions';
+import {
+  actions,
+  Actions,
+  AllActions,
+  AugmentedActionContext,
+} from '@/store/actions';
 
 // export type AppStore = Omit<
 //   Store<AuthState>,
@@ -71,5 +76,6 @@ export {
   Getters,
   Mutations,
   Actions,
+  AllActions,
   AugmentedActionContext,
 };

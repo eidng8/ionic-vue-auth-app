@@ -5,11 +5,18 @@
  *
  */
 
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import '@capacitor-community/http';
 import { Plugins } from '@capacitor/core';
 import { HttpOptions, HttpPlugin } from '@capacitor-community/http';
-import { Credential } from '@/types/Credential';
+import {
+  Credential,
+  LoginSuccess,
+  RegisterSuccess,
+  Registration,
+  ResponseMessage,
+} from '@/types/http';
+import { Heartbeat } from '@/models/heartbeat';
 
 /**
  * Tell axios to use Capacitor's HTTP, and sets the base URL.
@@ -29,7 +36,6 @@ export default function (
       url: new URL(config.url || '', config.baseURL).toString(),
       method: config.method,
       params: config.params,
-      data: JSON.parse(config.data), // axios has done the conversion
       headers: config.headers,
       readTimeout: config.timeout,
       connectTimeout: config.timeout,
@@ -37,18 +43,65 @@ export default function (
         credentials: config.withCredentials ? 'include' : 'same-origin',
       },
     };
+    if (
+      -1 == ['get', 'head'].indexOf(options.method?.toLowerCase() || '') &&
+      'string' == typeof config.data
+    ) {
+      // axios has done the conversion
+      options.data = JSON.parse(config.data);
+    }
     return http
       .request(options)
-      .then(res => ({ config, ...res } as AxiosResponse));
+      .then(res => {
+        const response = { config, ...res } as AxiosResponse;
+        if (res.status >= 300) {
+          response.data = new Error(res.data.exception || res.data.message);
+        }
+        return response;
+      })
+      .catch(err => {
+        return { data: err } as AxiosResponse;
+      });
   };
 }
 
-export interface LoginSuccess {
-  token: string;
-  token_type: 'bearer';
-  expires_in: number;
+export function hasToken(token?: string): boolean {
+  return 'string' == typeof token && token.length > 0;
 }
 
-export function login(credential: Credential) {
-  return axios.post<LoginSuccess>('/login', credential);
+async function post<T, R>(
+  uri: string,
+  token?: string,
+  data?: T,
+  config?: AxiosRequestConfig,
+): Promise<R> {
+  const cfg = config || {};
+  cfg.url = uri;
+  cfg.data = data;
+  cfg.method = 'POST';
+  if (hasToken(token)) {
+    cfg.headers = cfg.headers || {};
+    cfg.headers['Authorization'] = `bearer ${token}`;
+  }
+  return axios(cfg).then(r => r.data);
+}
+
+export async function login(credential: Credential): Promise<LoginSuccess> {
+  return post<Credential, LoginSuccess>('/login', undefined, credential);
+}
+
+export function register(user: Registration): Promise<RegisterSuccess> {
+  return post<Registration, RegisterSuccess>('/register', undefined, user);
+}
+
+export function logout(token?: string): Promise<ResponseMessage> {
+  return post<undefined, ResponseMessage>('/logout', token);
+}
+
+export async function refresh(token?: string): Promise<LoginSuccess> {
+  return post<Credential, LoginSuccess>('/refresh', token);
+}
+
+export async function heartbeat(token?: string): Promise<Heartbeat> {
+  return post<Credential, Heartbeat>('/heartbeat', token);
 }

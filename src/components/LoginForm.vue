@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
 import {
   IonButton,
   IonCard,
@@ -44,8 +45,8 @@ import {
   IonList,
 } from '@ionic/vue';
 
+import { AuthState, Store } from '@/store';
 import PasswordWithEyeToggle from '@/components/PasswordWithEyeToggle.vue';
-import { store } from '@/store';
 
 export default defineComponent({
   name: 'LoginForm',
@@ -62,6 +63,7 @@ export default defineComponent({
   setup() {
     const email = ref('');
     const password = ref('');
+    const store: Store = useStore<AuthState>();
 
     return {
       email,
