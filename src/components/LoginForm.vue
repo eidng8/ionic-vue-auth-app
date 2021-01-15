@@ -8,7 +8,7 @@
 <template>
   <ion-card>
     <ion-card-content>
-      <form @submit="submit($event)">
+      <form @submit.prevent.stop="submit">
         <ion-list>
           <ion-item>
             <ion-label position="floating">Email</ion-label>
@@ -68,9 +68,7 @@ export default defineComponent({
     return {
       email,
       password,
-      submit: (evt: Event) => {
-        evt.stopImmediatePropagation();
-        evt.preventDefault();
+      submit: () => {
         store.dispatch('login', {
           email: email.value,
           password: password.value,
