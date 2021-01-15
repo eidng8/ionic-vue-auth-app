@@ -30,5 +30,6 @@ export default defineComponent({
 <style scoped>
 p {
   color: var(--ion-color-medium);
+  overflow: auto;
 }
 </style>
