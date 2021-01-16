@@ -15,8 +15,10 @@ export class User implements UserData {
   updatedAt!: Date;
 
   constructor(user: UserData | RegisterSuccess) {
-    let data: any = (user => (user as RegisterSuccess).user || user)(user);
-    data = (({ id, name, email }) => ({ id, name, email }))(data);
+    const data: any = (user => (user as RegisterSuccess).user || user)(user);
+    this.id = data.id;
+    this.name = data.name;
+    this.email = data.email;
     if (data.created_at) this.createdAt = new Date(data.created_at);
     if (data.updated_at) this.createdAt = new Date(data.updated_at);
     if (data.createdAt) this.createdAt = new Date(data.createdAt);

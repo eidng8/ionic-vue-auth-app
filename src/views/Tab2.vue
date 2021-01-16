@@ -9,7 +9,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Tab 2</ion-title>
+        <ion-title>Register</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -19,30 +19,35 @@
         </ion-toolbar>
       </ion-header>
 
-      <ExploreContainer name="Tab 2 page" />
+      <div class="page-content">
+        <register-form></register-form>
+        <message-box></message-box>
+      </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/vue';
-import ExploreContainer from '@/components/ExploreContainer.vue';
+import RegisterForm from '@/components/RegisterForm.vue';
+import MessageBox from '@/components/MessageBox.vue';
 
 export default {
   name: 'Tab2',
   components: {
-    ExploreContainer,
     IonHeader,
     IonToolbar,
     IonTitle,
     IonContent,
     IonPage,
+    RegisterForm,
+    MessageBox,
   },
 };
 </script>

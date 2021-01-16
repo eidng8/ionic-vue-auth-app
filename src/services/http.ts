@@ -55,7 +55,12 @@ export default function (
       .then(res => {
         const response = { config, ...res } as AxiosResponse;
         if (res.status >= 300) {
-          response.data = new Error(res.data.exception || res.data.message);
+          response.data = new Error(
+            res.data.exception || res.data.message || 'Error occured.',
+          );
+          if ('object' == typeof res.data) {
+            response.data.data = res.data;
+          }
         }
         return response;
       })

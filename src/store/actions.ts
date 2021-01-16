@@ -19,6 +19,12 @@ function hasError(commit: any, response: any): boolean {
   }
   if (response instanceof Error) {
     commit('message', response.message || (response as any).exception);
+    if ((response as any).data) {
+      commit(
+        'message',
+        JSON.stringify((response as any).data, undefined, '  '),
+      );
+    }
     return true;
   }
   return false;
@@ -42,13 +48,13 @@ export type AugmentedActionContext = {
 export interface Actions {
   login({ commit }: AugmentedActionContext, payload: Credential): void;
 
-  refresh({ commit }: AugmentedActionContext, payload: Credential): void;
+  refresh({ commit }: AugmentedActionContext): void;
 
-  logout({ commit }: AugmentedActionContext, payload: Credential): void;
+  logout({ commit }: AugmentedActionContext): void;
 
-  heartbeat({ commit }: AugmentedActionContext, payload: Credential): void;
+  heartbeat({ commit }: AugmentedActionContext): void;
 
-  register({ commit }: AugmentedActionContext, payload: Credential): void;
+  register({ commit }: AugmentedActionContext, payload: Registration): void;
 }
 
 export const actions: ActionTree<AuthState, AuthState> & Actions = {
@@ -78,11 +84,10 @@ export const actions: ActionTree<AuthState, AuthState> & Actions = {
   register({ commit }, user: Registration) {
     register(user).then(response => {
       if (hasError(commit, response)) return;
+      const user = new User(response);
       commit(
         'message',
-        response.message +
-          '\nCreated user:\n' +
-          JSON.stringify(new User(response), undefined, '  '),
+        response.message + '\n' + JSON.stringify(user, undefined, '  '),
       );
     });
   },
